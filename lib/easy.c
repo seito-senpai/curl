@@ -366,28 +366,6 @@ struct Curl_easy *curl_easy_init(void)
   return data;
 }
 
-/*
- * curl_easy_setopt() is the external interface for setting options on an
- * easy handle.
- */
-
-#undef curl_easy_setopt
-CURLcode curl_easy_setopt(struct Curl_easy *data, CURLoption tag, ...)
-{
-  va_list arg;
-  CURLcode result;
-
-  if(!data)
-    return CURLE_BAD_FUNCTION_ARGUMENT;
-
-  va_start(arg, tag);
-
-  result = Curl_setopt(data, tag, arg);
-
-  va_end(arg);
-  return result;
-}
-
 #ifdef CURLDEBUG
 
 struct socketmonitor {

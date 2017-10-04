@@ -23,7 +23,5 @@
  ***************************************************************************/
 
 CURLcode Curl_setstropt(char **charp, const char *s);
-CURLcode Curl_setopt(struct Curl_easy *data, CURLoption option,
-                     va_list param);
 
 #endif /* HEADER_CURL_SETOPT_H */

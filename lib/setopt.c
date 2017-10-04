@@ -104,8 +104,8 @@ static CURLcode setstropt_userpwd(char *option, char **userp, char **passwdp)
 #define C_SSLVERSION_VALUE(x) (x & 0xffff)
 #define C_SSLVERSION_MAX_VALUE(x) (x & 0xffff0000)
 
-CURLcode Curl_setopt(struct Curl_easy *data, CURLoption option,
-                     va_list param)
+static CURLcode setopt(struct Curl_easy *data, CURLoption option,
+                       va_list param)
 {
   char *argptr;
   CURLcode result = CURLE_OK;
@@ -2359,5 +2359,27 @@ CURLcode Curl_setopt(struct Curl_easy *data, CURLoption option,
     break;
   }
 
+  return result;
+}
+
+/*
+ * curl_easy_setopt() is the external interface for setting options on an
+ * easy handle.
+ */
+
+#undef curl_easy_setopt
+CURLcode curl_easy_setopt(struct Curl_easy *data, CURLoption tag, ...)
+{
+  va_list arg;
+  CURLcode result;
+
+  if(!data)
+    return CURLE_BAD_FUNCTION_ARGUMENT;
+
+  va_start(arg, tag);
+
+  result = setopt(data, tag, arg);
+
+  va_end(arg);
   return result;
 }
