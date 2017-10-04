@@ -36,6 +36,7 @@
 #include "warnless.h"
 #include "sendf.h"
 #include "http2.h"
+#include "setopt.h"
 
 /* The last 3 #include files should be in this order */
 #include "curl_printf.h"
