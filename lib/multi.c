@@ -407,8 +407,11 @@ CURLMcode curl_multi_add_handle(struct Curl_multi *multi,
     data->dns.hostcachetype = HCACHE_MULTI;
   }
 
-  /* Point to the multi's connection cache */
-  data->state.conn_cache = &multi->conn_cache;
+  /* Point to the shared or multi handle connection cache */
+  if(data->share && (data->share->specifier & (1<< CURL_LOCK_DATA_CONNECT)))
+    data->state.conn_cache = &data->share->conn_cache;
+  else
+    data->state.conn_cache = &multi->conn_cache;
 
   /* This adds the new entry at the 'end' of the doubly-linked circular
      list of Curl_easy structs to try and maintain a FIFO queue so
@@ -504,7 +507,7 @@ ConnectionDone(struct Curl_easy *data, struct connectdata *conn)
      data->state.conn_cache->num_connections > maxconnects) {
     infof(data, "Connection cache is full, closing the oldest one.\n");
 
-    conn_candidate = Curl_oldest_idle_connection(data);
+    conn_candidate = Curl_conncache_oldest_idle(data);
 
     if(conn_candidate) {
       /* Set the connection's owner correctly */

@@ -55,7 +55,8 @@ CURLcode Curl_conncache_add_conn(struct conncache *connc,
 void Curl_conncache_remove_conn(struct conncache *connc,
                                 struct connectdata *conn);
 
-void Curl_conncache_foreach(struct conncache *connc,
+void Curl_conncache_foreach(struct Curl_easy *data,
+                            struct conncache *connc,
                             void *param,
                             int (*func)(struct connectdata *conn,
                                         void *param));
@@ -63,6 +64,8 @@ void Curl_conncache_foreach(struct conncache *connc,
 struct connectdata *
 Curl_conncache_find_first_connection(struct conncache *connc);
 
+struct connectdata *
+Curl_conncache_oldest_idle(struct Curl_easy *data);
 void Curl_conncache_print(struct conncache *connc);
 
 #endif /* HEADER_CURL_CONNCACHE_H */
