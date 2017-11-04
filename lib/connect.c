@@ -1097,10 +1097,6 @@ static CURLcode singleipconnect(struct connectdata *conn,
     return CURLE_OK;
   }
 
-#ifdef ENABLE_IPV6
-  conn->bits.ipv6 = (addr.family == AF_INET6)?TRUE:FALSE;
-#endif
-
   if(-1 == rc) {
     switch(error) {
     case EINPROGRESS:

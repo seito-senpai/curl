@@ -7141,6 +7141,9 @@ CURLcode Curl_setup_conn(struct connectdata *conn,
     *protocol_done = TRUE;
     Curl_updateconninfo(conn, conn->sock[FIRSTSOCKET]);
     Curl_verboseconnect(conn);
+#ifdef ENABLE_IPV6
+    conn->bits.ipv6 = (conn->ip_addr->ai_family == AF_INET6)?TRUE:FALSE;
+#endif
   }
 
   conn->now = Curl_now(); /* time this *after* the connect is done, we
